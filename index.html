@@ -1,1506 +1,468 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
-    <meta charset="UTF-8">
-
-    <meta name="viewport"
-          content="width=device-width,
-                   initial-scale=1.0,
-                   maximum-scale=1.0,
-                   user-scalable=no">
-
-    <title>A Very Important Question</title>
-
-
-    <style>
-
-        /* =========================================
-           RESET
-        ========================================= */
-
-        * {
-            box-sizing: border-box;
-            -webkit-tap-highlight-color: transparent;
-        }
-
-
-        /* =========================================
-           BODY
-        ========================================= */
-
-        body {
-
-            margin: 0;
-
-            min-height: 100vh;
-
-            font-family:
-                -apple-system,
-                BlinkMacSystemFont,
-                "Segoe UI",
-                sans-serif;
-
-            color: white;
-
-            overflow: hidden;
-
-            background:
-                linear-gradient(
-                    135deg,
-                    #141e30,
-                    #243b55
-                );
-        }
-
-
-        /* =========================================
-           SCREEN
-        ========================================= */
-
-        .screen {
-
-            position: absolute;
-
-            width: 100%;
-            height: 100vh;
-
-            display: none;
-
-            justify-content: center;
-            align-items: center;
-
-            padding: 15px;
-        }
-
-
-        .screen.active {
-            display: flex;
-        }
-
-
-        /* =========================================
-           CARD
-        ========================================= */
-
-        .card {
-
-            width: 92%;
-
-            max-width: 420px;
-
-            max-height: 90vh;
-
-            overflow-y: auto;
-
-            padding: 25px 20px;
-
-            border-radius: 24px;
-
-            text-align: center;
-
-            background:
-                rgba(255,255,255,0.10);
-
-            backdrop-filter: blur(15px);
-
-            box-shadow:
-                0 15px 45px
-                rgba(0,0,0,0.35);
-
-            animation:
-                appear 0.5s ease;
-        }
-
-
-        h1 {
-
-            font-size: 28px;
-
-            margin:
-                0 0 15px 0;
-        }
-
-
-        h2 {
-
-            font-size: 23px;
-
-            margin:
-                10px 0;
-        }
-
-
-        p {
-
-            font-size: 16px;
-
-            line-height: 1.5;
-
-            margin:
-                10px 0;
-        }
-
-
-        .small {
-
-            font-size: 13px;
-
-            opacity: 0.8;
-
-            min-height: 20px;
-        }
-
-
-        /* =========================================
-           BUTTONS
-        ========================================= */
-
-        button {
-
-            border: none;
-
-            padding:
-                13px 19px;
-
-            margin: 6px;
-
-            border-radius: 14px;
-
-            font-size: 15px;
-
-            font-weight: 600;
-
-            cursor: pointer;
-
-            transition:
-                transform 0.18s ease,
-                box-shadow 0.18s ease;
-        }
-
-
-        button:active {
-
-            transform:
-                scale(0.94);
-        }
-
-
-        .primary {
-
-            background: white;
-
-            color: #222;
-
-            box-shadow:
-                0 7px 20px
-                rgba(0,0,0,0.25);
-        }
-
-
-        .danger {
-
-            background:
-                #ff4f70;
-
-            color: white;
-        }
-
-
-        .option {
-
-            width: 90%;
-
-            max-width: 340px;
-
-            background:
-                rgba(255,255,255,0.94);
-
-            color: #222;
-        }
-
-
-        .big-button {
-
-            padding:
-                15px 23px;
-
-            font-size: 17px;
-        }
-
-
-        /* =========================================
-           START SCREEN
-        ========================================= */
-
-        #startScreen {
-
-            background:
-                radial-gradient(
-                    circle at top,
-                    #553c9a,
-                    #141e30 70%
-                );
-        }
-
-
-        /* =========================================
-           DOOR SCREEN
-        ========================================= */
-
-        #doorScreen {
-
-            background:
-                linear-gradient(
-                    135deg,
-                    #201335,
-                    #4a1942
-                );
-        }
-
-
-        .doors {
-
-            display: flex;
-
-            justify-content: center;
-
-            gap: 8px;
-
-            margin-top: 20px;
-        }
-
-
-        .door {
-
-            width: 82px;
-
-            height: 130px;
-
-            border-radius:
-                12px 12px 5px 5px;
-
-            display: flex;
-
-            justify-content: center;
-
-            align-items: center;
-
-            flex-direction: column;
-
-            color: white;
-
-            font-size: 30px;
-
-            box-shadow:
-                0 10px 25px
-                rgba(0,0,0,0.3);
-
-            transition:
-                transform 0.2s ease,
-                box-shadow 0.2s ease;
-        }
-
-        .door:hover {
-            transform: scale(1.05) translateY(-3px);
-            box-shadow: 0 15px 35px rgba(0,0,0,0.4);
-        }
-
-
-        .door span {
-
-            font-size: 11px;
-
-            margin-top: 7px;
-        }
-
-
-        .red {
-
-            background:
-                linear-gradient(
-                    #b33951,
-                    #6b1829
-                );
-        }
-
-
-        .blue {
-
-            background:
-                linear-gradient(
-                    #3977bd,
-                    #183d6b
-                );
-        }
-
-
-        .black {
-
-            background:
-                linear-gradient(
-                    #444,
-                    #111
-                );
-        }
-
-
-        /* =========================================
-           RIDDLE SCREEN
-        ========================================= */
-
-        #riddleScreen {
-
-            background:
-                linear-gradient(
-                    135deg,
-                    #1a1a2e,
-                    #16213e
-                );
-        }
-
-        .riddle-options button {
-            display: block;
-            width: 85%;
-            max-width: 300px;
-            margin: 8px auto;
-            background: rgba(255,255,255,0.9);
-            color: #222;
-            border-radius: 12px;
-            padding: 12px 16px;
-            font-size: 14px;
-            text-align: left;
-        }
-
-        .riddle-options button:hover {
-            background: white;
-            transform: scale(1.02);
-        }
-
-
-        /* =========================================
-           BUTTON GAME
-        ========================================= */
-
-        #buttonScreen {
-
-            background:
-                linear-gradient(
-                    135deg,
-                    #351c75,
-                    #512b81
-                );
-
-            transition: background 0.3s ease;
-        }
-
-
-        .big-red-button {
-
-            width: 155px;
-
-            height: 155px;
-
-            border-radius: 50%;
-
-            background:
-                radial-gradient(
-                    circle at 35% 30%,
-                    #ff6b81,
-                    #d91e45 55%,
-                    #8d0d28
-                );
-
-            color: white;
-
-            font-size: 18px;
-
-            border:
-                6px solid
-                rgba(255,255,255,0.2);
-
-            box-shadow:
-                0 15px 35px
-                rgba(0,0,0,0.4);
-
-            margin-top: 15px;
-
-            transition:
-                transform 0.2s ease,
-                box-shadow 0.2s ease;
-        }
-
-        .big-red-button:hover {
-            transform: scale(1.05);
-            box-shadow: 0 20px 45px rgba(0,0,0,0.5);
-        }
-
-        .shake {
-            animation: shake 0.4s ease;
-        }
-
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            20% { transform: translateX(-8px); }
-            40% { transform: translateX(8px); }
-            60% { transform: translateX(-5px); }
-            80% { transform: translateX(5px); }
-        }
-
-
-        /* =========================================
-           TRUTH OR DARE SCREEN
-        ========================================= */
-
-        #truthDareScreen {
-
-            background:
-                linear-gradient(
-                    135deg,
-                    #0f3443,
-                    #34e89e20
-                );
-        }
-
-        .td-buttons {
-            display: flex;
-            justify-content: center;
-            gap: 12px;
-            margin-top: 15px;
-        }
-
-        .td-buttons button {
-            padding: 14px 28px;
-            font-size: 16px;
-            border-radius: 14px;
-            font-weight: 700;
-        }
-
-        .truth-btn {
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            color: white;
-        }
-
-        .dare-btn {
-            background: linear-gradient(135deg, #f093fb, #f5576c);
-            color: white;
-        }
-
-
-        /* =========================================
-           UNIVERSE SCREEN
-        ========================================= */
-
-        #universeScreen {
-
-            background:
-                radial-gradient(
-                    circle at 20% 20%,
-                    #3a1c71,
-                    transparent 30%
-                ),
-
-                radial-gradient(
-                    circle at 80% 70%,
-                    #1d2671,
-                    #05010d
-                );
-        }
-
-
-        .universes {
-
-            display: grid;
-
-            grid-template-columns:
-                1fr 1fr;
-
-            gap: 10px;
-
-            margin-top: 18px;
-        }
-
-
-        .universe {
-
-            min-height: 105px;
-
-            border-radius: 18px;
-
-            display: flex;
-
-            justify-content: center;
-
-            align-items: center;
-
-            flex-direction: column;
-
-            color: white;
-
-            background:
-                rgba(255,255,255,0.12);
-
-            border:
-                1px solid
-                rgba(255,255,255,0.15);
-
-            transition:
-                transform 0.2s ease,
-                background 0.2s ease;
-        }
-
-        .universe:hover {
-            transform: scale(1.04);
-            background: rgba(255,255,255,0.18);
-        }
-
-
-        .universe-icon {
-
-            font-size: 32px;
-
-            margin-bottom: 5px;
-        }
-
-
-        .universe-name {
-
-            font-size: 13px;
-        }
-
-
-        /* =========================================
-           SONG SCREEN
-        ========================================= */
-
-        #songScreen {
-
-            background:
-                linear-gradient(
-                    135deg,
-                    #232526,
-                    #414345
-                );
-        }
-
-        .song-options {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-            margin-top: 15px;
-        }
-
-        .song-options button {
-            min-height: 80px;
-            border-radius: 16px;
-            background: rgba(255,255,255,0.1);
-            border: 1px solid rgba(255,255,255,0.15);
-            color: white;
-            font-size: 13px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 5px;
-            transition: transform 0.2s ease, background 0.2s ease;
-        }
-
-        .song-options button:hover {
-            transform: scale(1.04);
-            background: rgba(255,255,255,0.18);
-        }
-
-        .song-icon {
-            font-size: 26px;
-        }
-
-
-        /* =========================================
-           FINAL SCREEN
-        ========================================= */
-
-        #finalScreen {
-
-            background:
-                radial-gradient(
-                    circle at center,
-                    #812c55,
-                    #220c25
-                );
-        }
-
-
-        .final-card {
-
-            width: 94%;
-
-            max-width: 380px;
-
-            max-height: 88vh;
-
-            padding:
-                20px 16px;
-
-            overflow-y: auto;
-        }
-
-
-        .heart {
-
-            font-size: 48px;
-
-            animation:
-                heartbeat 1.2s infinite;
-        }
-
-
-        /* =========================================
-           FINAL BUTTON AREA
-        ========================================= */
-
-        .final-buttons {
-
-            position: relative;
-
-            width: 100%;
-
-            height: 135px;
-
-            margin-top: 10px;
-        }
-
-
-        .commit-button,
-        .never-button {
-
-            position: absolute;
-
-            padding:
-                12px 16px;
-
-            border-radius: 14px;
-
-            font-size: 14px;
-
-            font-weight: 600;
-        }
-
-
-        .commit-button {
-
-            left: 50%;
-
-            top: 5px;
-
-            transform:
-                translateX(-50%);
-
-            background: white;
-
-            color: #222;
-
-            white-space: nowrap;
-        }
-
-
-        .never-button {
-
-            background:
-                #ff4f70;
-
-            color: white;
-
-            left: 50%;
-
-            top: 65px;
-
-            transform:
-                translateX(-50%);
-
-            transition:
-                left 0.2s ease,
-                top 0.2s ease;
-        }
-
-
-        .final-message {
-
-            min-height: 65px;
-
-            margin-top: 5px;
-        }
-
-
-
-
-        /* =========================================
-           CONFETTI
-        ========================================= */
-
-        .confetti-container {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 999;
-            overflow: hidden;
-        }
-
-        .confetti {
-            position: absolute;
-            width: 10px;
-            height: 10px;
-            top: -10px;
-            animation: confetti-fall 3s ease-out forwards;
-        }
-
-        @keyframes confetti-fall {
-            0% {
-                transform: translateY(0) rotate(0deg);
-                opacity: 1;
-            }
-            100% {
-                transform: translateY(100vh) rotate(720deg);
-                opacity: 0;
-            }
-        }
-
-
-        /* =========================================
-           ANIMATIONS
-        ========================================= */
-
-        @keyframes appear {
-
-            from {
-
-                opacity: 0;
-
-                transform:
-                    translateY(15px)
-                    scale(0.97);
-            }
-
-            to {
-
-                opacity: 1;
-
-                transform:
-                    translateY(0)
-                    scale(1);
-            }
-        }
-
-
-        @keyframes heartbeat {
-
-            0%,
-            100% {
-
-                transform:
-                    scale(1);
-            }
-
-            50% {
-
-                transform:
-                    scale(1.12);
-            }
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-8px); }
-        }
-
-        .float {
-            animation: float 2.5s ease-in-out infinite;
-        }
-
-
-        /* =========================================
-           PROGRESS BAR
-        ========================================= */
-
-        .progress-bar {
-            position: fixed;
-            top: 0;
-            left: 0;
-            height: 3px;
-            background: linear-gradient(90deg, #667eea, #f093fb);
-            transition: width 0.4s ease;
-            z-index: 1000;
-        }
-
-
-        /* =========================================
-           MOBILE
-        ========================================= */
-
-        @media (max-width: 500px) {
-
-            .card {
-
-                width: 94%;
-
-                max-width: 360px;
-
-                padding:
-                    21px 15px;
-            }
-
-
-            h1 {
-
-                font-size: 25px;
-            }
-
-
-            h2 {
-
-                font-size: 21px;
-            }
-
-
-            p {
-
-                font-size: 15px;
-            }
-
-
-            .door {
-
-                width: 72px;
-
-                height: 115px;
-
-                font-size: 27px;
-            }
-
-
-            .universe {
-
-                min-height: 95px;
-            }
-
-
-            .big-red-button {
-
-                width: 140px;
-
-                height: 140px;
-
-                font-size: 16px;
-            }
-
-        }
-
-    </style>
-
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>A Very Important Question</title>
+
+<style>
+/* RESET */
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+/* BODY */
+body {
+    margin: 0;
+    min-height: 100vh;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    color: white;
+    overflow: hidden;
+    background: linear-gradient(135deg, #141e30, #243b55);
+}
+
+/* SCREEN */
+.screen {
+    position: absolute;
+    width: 100%;
+    height: 100vh;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    padding: 15px;
+}
+.screen.active { display: flex; }
+
+/* CARD */
+.card {
+    width: 92%;
+    max-width: 420px;
+    max-height: 90vh;
+    overflow-y: auto;
+    padding: 25px 20px;
+    border-radius: 24px;
+    text-align: center;
+    background: rgba(255,255,255,0.10);
+    backdrop-filter: blur(15px);
+    box-shadow: 0 15px 45px rgba(0,0,0,0.35);
+    animation: appear 0.5s ease;
+}
+
+h1 { font-size: 28px; margin: 0 0 15px 0; }
+h2 { font-size: 23px; margin: 10px 0; }
+p { font-size: 16px; line-height: 1.5; margin: 10px 0; }
+.small { font-size: 13px; opacity: 0.8; min-height: 20px; }
+
+/* BUTTONS */
+button {
+    border: none;
+    padding: 13px 19px;
+    margin: 6px;
+    border-radius: 14px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+button:active { transform: scale(0.94); }
+
+.primary { background: white; color: #222; box-shadow: 0 7px 20px rgba(0,0,0,0.25); }
+.danger { background: #ff4f70; color: white; }
+.option { width: 90%; max-width: 340px; background: rgba(255,255,255,0.94); color: #222; }
+.big-button { padding: 15px 23px; font-size: 17px; }
+
+/* START */
+#startScreen { background: radial-gradient(circle at top, #553c9a, #141e30 70%); }
+
+/* DOORS */
+#doorScreen { background: linear-gradient(135deg, #201335, #4a1942); }
+.doors { display: flex; justify-content: center; gap: 8px; margin-top: 20px; }
+.door {
+    width: 82px;
+    height: 130px;
+    border-radius: 12px 12px 5px 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    color: white;
+    font-size: 30px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.door:hover { transform: scale(1.05) translateY(-3px); box-shadow: 0 15px 35px rgba(0,0,0,0.4); }
+.door span { font-size: 11px; margin-top: 7px; }
+.red { background: linear-gradient(#b33951, #6b1829); }
+.blue { background: linear-gradient(#3977bd, #183d6b); }
+.black { background: linear-gradient(#444, #111); }
+
+/* RIDDLE */
+#riddleScreen { background: linear-gradient(135deg, #1a1a2e, #16213e); }
+.riddle-options button {
+    display: block;
+    width: 85%;
+    max-width: 300px;
+    margin: 8px auto;
+    background: rgba(255,255,255,0.9);
+    color: #222;
+    border-radius: 12px;
+    padding: 12px 16px;
+    font-size: 14px;
+    text-align: left;
+}
+.riddle-options button:hover { background: white; transform: scale(1.02); }
+
+/* BUTTON GAME */
+#buttonScreen { background: linear-gradient(135deg, #351c75, #512b81); transition: background 0.3s ease; }
+.big-red-button {
+    width: 155px;
+    height: 155px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 30%, #ff6b81, #d91e45 55%, #8d0d28);
+    color: white;
+    font-size: 18px;
+    border: 6px solid rgba(255,255,255,0.2);
+    box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+    margin-top: 15px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.big-red-button:hover { transform: scale(1.05); box-shadow: 0 20px 45px rgba(0,0,0,0.5); }
+.shake { animation: shake 0.4s ease; }
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    20% { transform: translateX(-8px); }
+    40% { transform: translateX(8px); }
+    60% { transform: translateX(-5px); }
+    80% { transform: translateX(5px); }
+}
+
+/* TRUTH OR DARE */
+#truthDareScreen { background: linear-gradient(135deg, #0f3443, #34e89e20); }
+.td-buttons { display: flex; justify-content: center; gap: 12px; margin-top: 15px; }
+.td-buttons button { padding: 14px 28px; font-size: 16px; border-radius: 14px; font-weight: 700; }
+.truth-btn { background: linear-gradient(135deg, #667eea, #764ba2); color: white; }
+.dare-btn { background: linear-gradient(135deg, #f093fb, #f5576c); color: white; }
+
+/* UNIVERSE */
+#universeScreen {
+    background:
+        radial-gradient(circle at 20% 20%, #3a1c71, transparent 30%),
+        radial-gradient(circle at 80% 70%, #1d2671, #05010d);
+}
+.universes { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 18px; }
+.universe {
+    min-height: 105px;
+    border-radius: 18px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    color: white;
+    background: rgba(255,255,255,0.12);
+    border: 1px solid rgba(255,255,255,0.15);
+    transition: transform 0.2s ease, background 0.2s ease;
+}
+.universe:hover { transform: scale(1.04); background: rgba(255,255,255,0.18); }
+.universe-icon { font-size: 32px; margin-bottom: 5px; }
+.universe-name { font-size: 13px; }
+
+/* SONG / OUTFIT OPTIONS */
+#songScreen { background: linear-gradient(135deg, #232526, #414345); }
+.song-options { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 15px; }
+.song-options button {
+    min-height: 80px;
+    border-radius: 16px;
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.15);
+    color: white;
+    font-size: 13px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    transition: transform 0.2s ease, background 0.2s ease;
+}
+.song-options button:hover { transform: scale(1.04); background: rgba(255,255,255,0.18); }
+.song-icon { font-size: 26px; }
+
+/* FINAL */
+#finalScreen { background: radial-gradient(circle at center, #812c55, #220c25); }
+.final-card { width: 94%; max-width: 380px; max-height: 88vh; padding: 20px 16px; overflow-y: auto; }
+.heart { font-size: 48px; animation: heartbeat 1.2s infinite; }
+
+.final-buttons { position: relative; width: 100%; height: 135px; margin-top: 10px; }
+.commit-button, .never-button {
+    position: absolute;
+    padding: 12px 16px;
+    border-radius: 14px;
+    font-size: 14px;
+    font-weight: 600;
+}
+.commit-button { left: 50%; top: 5px; transform: translateX(-50%); background: white; color: #222; white-space: nowrap; }
+.never-button {
+    background: #ff4f70;
+    color: white;
+    left: 50%;
+    top: 65px;
+    transform: translateX(-50%);
+    transition: left 0.2s ease, top 0.2s ease;
+}
+.final-message { min-height: 65px; margin-top: 5px; }
+
+/* CONFETTI */
+.confetti-container {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 999;
+    overflow: hidden;
+}
+.confetti { position: absolute; width: 10px; height: 10px; top: -10px; animation: confetti-fall 3s ease-out forwards; }
+@keyframes confetti-fall {
+    0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+    100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+}
+
+/* ANIMATIONS */
+@keyframes appear {
+    from { opacity: 0; transform: translateY(15px) scale(0.97); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+}
+@keyframes heartbeat {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.12); }
+}
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+}
+.float { animation: float 2.5s ease-in-out infinite; }
+
+/* PROGRESS BAR */
+.progress-bar {
+    position: fixed;
+    top: 0; left: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #667eea, #f093fb);
+    transition: width 0.4s ease;
+    z-index: 1000;
+}
+
+/* MOBILE */
+@media (max-width: 500px) {
+    .card { width: 94%; max-width: 360px; padding: 21px 15px; }
+    h1 { font-size: 25px; }
+    h2 { font-size: 21px; }
+    p { font-size: 15px; }
+    .door { width: 72px; height: 115px; font-size: 27px; }
+    .universe { min-height: 95px; }
+    .big-red-button { width: 140px; height: 140px; font-size: 16px; }
+}
+</style>
 </head>
-
 
 <body>
 
 <!-- PROGRESS BAR -->
 <div class="progress-bar" id="progressBar" style="width: 0%"></div>
 
+<!-- SONG (put song.mp3 in the same folder as this file) -->
+<audio id="loveSong" src="song.mp3" preload="auto"></audio>
 
-<!-- =====================================================
-     SCREEN 1
-     START
-===================================================== -->
 
-<section
-    class="screen active"
-    id="startScreen">
-
+<!-- SCREEN 1: START -->
+<section class="screen active" id="startScreen">
     <div class="card">
+        <h1>One Very Important Question</h1>
+        <p>Before we begin...</p>
+        <p>You have two choices.<br>Choose wisely.</p>
 
-        <h1>
-            One Very Important Question
-        </h1>
+        <button class="primary big-button" onclick="startWebsite()">CLICK ME</button>
+        <button class="danger big-button" onclick="doNotClick()">DO NOT CLICK ME</button>
 
-        <p>
-            Before we begin...
-        </p>
-
-        <p>
-            You have two choices.
-            <br>
-            Choose wisely.
-        </p>
-
-
-        <button
-            class="primary big-button"
-            onclick="startWebsite()">
-
-            CLICK ME
-
-        </button>
-
-
-        <button
-            class="danger big-button"
-            onclick="doNotClick()">
-
-            DO NOT CLICK ME
-
-        </button>
-
-
-        <p
-            id="doNotClickMessage"
-            class="small">
-
-        </p>
-
+        <p id="doNotClickMessage" class="small"></p>
     </div>
-
 </section>
 
 
-
-<!-- =====================================================
-     SCREEN 2
-     CHOOSE A DOOR
-===================================================== -->
-
-<section
-    class="screen"
-    id="doorScreen">
-
+<!-- SCREEN 2: DOORS -->
+<section class="screen" id="doorScreen">
     <div class="card">
-
-        <h1>
-            🚪 Choose a Door
-        </h1>
-
-        <p>
-            Three doors.
-            <br>
-            Three possibilities.
-        </p>
-
-        <p>
-            One is interesting.
-            <br>
-            One is suspicious.
-            <br>
-            One probably shouldn't be opened.
-        </p>
-
+        <h1>🚪 Choose a Door</h1>
+        <p>Three doors.<br>Three possibilities.</p>
+        <p>One is interesting.<br>One is suspicious.<br>One probably shouldn't be opened.</p>
 
         <div class="doors">
-
-
-            <button
-                class="door red"
-                onclick="chooseDoor('red')">
-
-                🚪
-
-                <span>
-                    RED
-                </span>
-
-            </button>
-
-
-            <button
-                class="door blue"
-                onclick="chooseDoor('blue')">
-
-                🚪
-
-                <span>
-                    BLUE
-                </span>
-
-            </button>
-
-
-            <button
-                class="door black"
-                onclick="chooseDoor('black')">
-
-                🚪
-
-                <span>
-                    BLACK
-                </span>
-
-            </button>
-
-
+            <button class="door red" onclick="chooseDoor('red')">🚪<span>RED</span></button>
+            <button class="door blue" onclick="chooseDoor('blue')">🚪<span>BLUE</span></button>
+            <button class="door black" onclick="chooseDoor('black')">🚪<span>BLACK</span></button>
         </div>
 
-
-        <div
-            id="doorMessage"
-            style="
-                margin-top:18px;
-                min-height:65px;
-            ">
-
-        </div>
-
+        <div id="doorMessage" style="margin-top:18px; min-height:65px;"></div>
     </div>
-
 </section>
 
 
-
-<!-- =====================================================
-     SCREEN 2.5
-     RIDDLE
-===================================================== -->
-
-<section
-    class="screen"
-    id="riddleScreen">
-
+<!-- SCREEN 2.5: RIDDLE -->
+<section class="screen" id="riddleScreen">
     <div class="card">
-
-        <h1 id="riddleTitle">
-            🧩 A Quick Test
-        </h1>
-
-        <p id="riddleText">
-        </p>
-
-        <div
-            id="riddleOptions"
-            class="riddle-options">
-        </div>
-
-        <div
-            id="riddleMessage"
-            style="min-height:50px; margin-top:12px;">
-        </div>
-
+        <h1 id="riddleTitle">🧩 A Quick Test</h1>
+        <p id="riddleText"></p>
+        <div id="riddleOptions" class="riddle-options"></div>
+        <div id="riddleMessage" style="min-height:50px; margin-top:12px;"></div>
     </div>
-
 </section>
 
 
-
-<!-- =====================================================
-     SCREEN 3
-     BUTTON THAT KEEPS GETTING WORSE
-===================================================== -->
-
-<section
-    class="screen"
-    id="buttonScreen">
-
+<!-- SCREEN 3: BUTTON GAME -->
+<section class="screen" id="buttonScreen">
     <div class="card">
+        <h1 id="buttonTitle">🎰 Whatever You Do...</h1>
+        <p id="buttonText">Don't press this button.</p>
 
-        <h1 id="buttonTitle">
-            🎰 Whatever You Do...
-        </h1>
+        <button class="big-red-button" onclick="pressBadButton()">PRESS ME</button>
 
-
-        <p id="buttonText">
-            Don't press this button.
-        </p>
-
-
-        <button
-            class="big-red-button"
-            onclick="pressBadButton()">
-
-            PRESS ME
-
-        </button>
-
-
-        <div
-            id="buttonMessage"
-            style="
-                min-height:65px;
-                margin-top:15px;
-            ">
-
-        </div>
-
+        <div id="buttonMessage" style="min-height:65px; margin-top:15px;"></div>
     </div>
-
 </section>
 
 
-
-<!-- =====================================================
-     SCREEN 3.5
-     TRUTH OR DARE
-===================================================== -->
-
-<section
-    class="screen"
-    id="truthDareScreen">
-
+<!-- SCREEN 3.5: TRUTH OR DARE -->
+<section class="screen" id="truthDareScreen">
     <div class="card">
-
-        <h1>
-            🎲 Truth or Dare?
-        </h1>
-
-        <p>
-            You've earned this.
-            <br>
-            Pick one.
-        </p>
+        <h1>🎲 Truth or Dare?</h1>
+        <p>You've earned this.<br>Pick one.</p>
 
         <div class="td-buttons">
-
-            <button
-                class="truth-btn"
-                onclick="chooseTruthDare('truth')">
-
-                TRUTH
-
-            </button>
-
-            <button
-                class="dare-btn"
-                onclick="chooseTruthDare('dare')">
-
-                DARE
-
-            </button>
-
+            <button class="truth-btn" onclick="chooseTruthDare('truth')">TRUTH</button>
+            <button class="dare-btn" onclick="chooseTruthDare('dare')">DARE</button>
         </div>
 
-        <div
-            id="truthDareMessage"
-            style="min-height:80px; margin-top:15px;">
-        </div>
-
+        <div id="truthDareMessage" style="min-height:80px; margin-top:15px;"></div>
     </div>
-
 </section>
 
 
-
-<!-- =====================================================
-     SCREEN 4
-     CHOOSE A UNIVERSE
-===================================================== -->
-
-<section
-    class="screen"
-    id="universeScreen">
-
+<!-- SCREEN 4: UNIVERSE -->
+<section class="screen" id="universeScreen">
     <div class="card">
-
-        <h1>
-            🌌 Choose a Universe
-        </h1>
-
-
-        <p>
-            Apparently you've made it this far.
-        </p>
-
-
-        <p>
-            So the universe has decided
-            to give you some options.
-        </p>
-
+        <h1>🌌 Choose a Universe</h1>
+        <p>Apparently you've made it this far.</p>
+        <p>So the universe has decided to give you some options.</p>
 
         <div class="universes">
-
-
-            <button
-                class="universe"
-                onclick="chooseUniverse('beach')">
-
-                <div class="universe-icon">
-                    🌊
-                </div>
-
-                <div class="universe-name">
-                    Beach
-                </div>
-
+            <button class="universe" onclick="chooseUniverse('beach')">
+                <div class="universe-icon">🌊</div>
+                <div class="universe-name">Beach</div>
             </button>
-
-
-            <button
-                class="universe"
-                onclick="chooseUniverse('mountain')">
-
-                <div class="universe-icon">
-                    🏔️
-                </div>
-
-                <div class="universe-name">
-                    Mountains
-                </div>
-
+            <button class="universe" onclick="chooseUniverse('mountain')">
+                <div class="universe-icon">🏔️</div>
+                <div class="universe-name">Mountains</div>
             </button>
-
-
-            <button
-                class="universe"
-                onclick="chooseUniverse('city')">
-
-                <div class="universe-icon">
-                    🌃
-                </div>
-
-                <div class="universe-name">
-                    City at Night
-                </div>
-
+            <button class="universe" onclick="chooseUniverse('city')">
+                <div class="universe-icon">🌃</div>
+                <div class="universe-name">City at Night</div>
             </button>
-
-
-            <button
-                class="universe"
-                onclick="chooseUniverse('lazy')">
-
-                <div class="universe-icon">
-                    🏠
-                </div>
-
-                <div class="universe-name">
-                    Lazy Sunday
-                </div>
-
+            <button class="universe" onclick="chooseUniverse('lazy')">
+                <div class="universe-icon">🏠</div>
+                <div class="universe-name">Lazy Sunday</div>
             </button>
-
-
         </div>
 
-
-        <div
-            id="universeMessage"
-            style="
-                margin-top:18px;
-                min-height:85px;
-            ">
-
-        </div>
-
+        <div id="universeMessage" style="margin-top:18px; min-height:85px;"></div>
     </div>
-
 </section>
 
 
-
-<!-- =====================================================
-     SCREEN 4.5
-     OUTFIT PICK
-===================================================== -->
-
-<section
-    class="screen"
-    id="outfitScreen">
-
+<!-- SCREEN 4.5: OUTFIT -->
+<section class="screen" id="outfitScreen">
     <div class="card">
-
-        <h1>
-            👗 What Are We Wearing?
-        </h1>
-
-        <p>
-            If we're going on this date...
-            <br>
-            we need to look good together.
-        </p>
-
-        <p style="font-size:14px; opacity:0.8;">
-            Pick a vibe for us:
-        </p>
+        <h1>👗 What Are We Wearing?</h1>
+        <p>If we're going on this date...<br>we need to look good together.</p>
+        <p style="font-size:14px; opacity:0.8;">Pick a vibe for us:</p>
 
         <div class="song-options">
-
             <button onclick="chooseOutfit('casual')">
                 <div class="song-icon">👕</div>
                 <div>Casual Cool</div>
                 <div style="font-size:11px; opacity:0.6; margin-top:3px;">Crop top + jeans & T-shirt + jeans</div>
             </button>
-
             <button onclick="chooseOutfit('classy')">
                 <div class="song-icon">👔</div>
                 <div>Classy Date</div>
                 <div style="font-size:11px; opacity:0.6; margin-top:3px;">Short dress & Shirt + trousers</div>
             </button>
-
             <button onclick="chooseOutfit('twinning')">
                 <div class="song-icon">👯</div>
                 <div>Twinning</div>
                 <div style="font-size:11px; opacity:0.6; margin-top:3px;">Both in black — matching energy</div>
             </button>
-
             <button onclick="chooseOutfit('comfy')">
                 <div class="song-icon">🧸</div>
                 <div>Comfy Chaos</div>
                 <div style="font-size:11px; opacity:0.6; margin-top:3px;">Hoodie + sneakers — zero effort</div>
             </button>
-
         </div>
 
-        <div
-            id="outfitMessage"
-            style="min-height:60px; margin-top:15px;">
-        </div>
-
+        <div id="outfitMessage" style="min-height:60px; margin-top:15px;"></div>
     </div>
-
 </section>
 
 
-
-<!-- =====================================================
-     SCREEN 4.6
-     SONG / MOOD PICK
-===================================================== -->
-
-<section
-    class="screen"
-    id="songScreen">
-
+<!-- SCREEN 4.6: MOOD -->
+<section class="screen" id="songScreen">
     <div class="card">
-
-        <h1>
-            🎵 Set the Mood
-        </h1>
-
-        <p>
-            Every universe needs a soundtrack.
-            <br>
-            What's the vibe?
-        </p>
+        <h1>🎵 Set the Mood</h1>
+        <p>Every universe needs a soundtrack.<br>What's the vibe?</p>
 
         <div class="song-options">
-
             <button onclick="chooseMood('chill')">
                 <div class="song-icon">🌙</div>
                 <div>Chill & Soft</div>
             </button>
-
             <button onclick="chooseMood('hype')">
                 <div class="song-icon">🔥</div>
                 <div>Hype & Energy</div>
             </button>
-
             <button onclick="chooseMood('romantic')">
                 <div class="song-icon">💫</div>
                 <div>Romantic</div>
             </button>
-
             <button onclick="chooseMood('chaotic')">
                 <div class="song-icon">🎪</div>
                 <div>Chaotic Fun</div>
             </button>
-
         </div>
 
-        <div
-            id="songMessage"
-            style="min-height:60px; margin-top:15px;">
-        </div>
-
+        <div id="songMessage" style="min-height:60px; margin-top:15px;"></div>
     </div>
-
 </section>
 
 
-
-<!-- =====================================================
-     SCREEN 5
-     FINAL GAME
-===================================================== -->
-
-<section
-    class="screen"
-    id="finalScreen">
-
+<!-- SCREEN 5: FINAL -->
+<section class="screen" id="finalScreen">
     <div class="card final-card">
 
+        <div class="heart">❤️</div>
 
-        <div class="heart">
-            ❤️
-        </div>
+        <h1>Final Question</h1>
 
+        <p>Surely you can get this one right.</p>
 
-        <h1>
-            Final Question
-        </h1>
+        <p><strong>What should happen next?</strong></p>
 
+        <button class="option" onclick="wrongAnswer('Coffee')">☕ Coffee</button>
+        <button class="option" onclick="wrongAnswer('Movie')">🎬 Movie</button>
+        <button class="option" onclick="wrongAnswer('Night Walk')">🌃 Night Walk</button>
+        <button class="option" onclick="wrongAnswer('Random Adventure')">✈️ Random Adventure</button>
 
-        <p>
-            Surely you can get this one right.
-        </p>
-
-
-        <p>
-            <strong>
-                What should happen next?
-            </strong>
-        </p>
-
-
-        <button
-            class="option"
-            onclick="wrongAnswer('Coffee')">
-
-            ☕ Coffee
-
-        </button>
-
-
-        <button
-            class="option"
-            onclick="wrongAnswer('Movie')">
-
-            🎬 Movie
-
-        </button>
-
-
-        <button
-            class="option"
-            onclick="wrongAnswer('Night Walk')">
-
-            🌃 Night Walk
-
-        </button>
-
-
-        <button
-            class="option"
-            onclick="wrongAnswer('Random Adventure')">
-
-            ✈️ Random Adventure
-
-        </button>
-
-
-        <div
-            id="finalMessage"
-            class="final-message">
-
-        </div>
+        <div id="finalMessage" class="final-message"></div>
 
     </div>
-
 </section>
-
-
-
-
 
 
 <script>
-
 
 /* =====================================================
    CHOICES TRACKER
@@ -1543,22 +505,11 @@ function updateProgress(step) {
 ===================================================== */
 
 function showScreen(id) {
-
-    document
-        .querySelectorAll(".screen")
-        .forEach(screen => {
-
-            screen.classList.remove("active");
-
-        });
-
-
-    document
-        .getElementById(id)
-        .classList.add("active");
-
+    document.querySelectorAll(".screen").forEach(screen => {
+        screen.classList.remove("active");
+    });
+    document.getElementById(id).classList.add("active");
 }
-
 
 
 /* =====================================================
@@ -1577,33 +528,20 @@ const doNotClickMessages = [
     "Fine. You win. Click the other button now. 👆"
 ];
 
-
 function startWebsite() {
-
     choices.startButton = "CLICK ME";
     updateProgress(1);
     showScreen("doorScreen");
-
 }
 
-
-
 function doNotClick() {
-
     doNotClickCount++;
     choices.doNotClickCount = doNotClickCount;
 
-    const index = Math.min(
-        doNotClickCount - 1,
-        doNotClickMessages.length - 1
-    );
+    const index = Math.min(doNotClickCount - 1, doNotClickMessages.length - 1);
 
-    document.getElementById(
-        "doNotClickMessage"
-    ).innerHTML = doNotClickMessages[index];
-
+    document.getElementById("doNotClickMessage").innerHTML = doNotClickMessages[index];
 }
-
 
 
 /* =====================================================
@@ -1616,97 +554,32 @@ function chooseDoor(door) {
 
     let message = "";
 
-
     if (door === "red") {
-
         message = `
-
-            <h2>
-                🔴 Bold choice.
-            </h2>
-
-            <p>
-                I respect it.
-                <br>
-                You seem like someone
-                who doesn't overthink things.
-            </p>
-
-            <button
-                class="primary"
-                onclick="goToRiddle()">
-
-                CONTINUE →
-
-            </button>
-
+            <h2>🔴 Bold choice.</h2>
+            <p>I respect it.<br>You seem like someone who doesn't overthink things.</p>
+            <button class="primary" onclick="goToRiddle()">CONTINUE →</button>
         `;
-
     }
-
 
     if (door === "blue") {
-
         message = `
-
-            <h2>
-                🔵 Safe choice.
-            </h2>
-
-            <p>
-                Interesting.
-                <br>
-                I expected a little more
-                chaos from you 😂
-            </p>
-
-            <button
-                class="primary"
-                onclick="goToRiddle()">
-
-                CONTINUE →
-
-            </button>
-
+            <h2>🔵 Safe choice.</h2>
+            <p>Interesting.<br>I expected a little more chaos from you 😂</p>
+            <button class="primary" onclick="goToRiddle()">CONTINUE →</button>
         `;
-
     }
-
 
     if (door === "black") {
-
         message = `
-
-            <h2>
-                ⚫ Oh.
-            </h2>
-
-            <p>
-                You chose <i>that</i> one.
-                <br><br>
-                Interesting.
-                Very interesting.
-            </p>
-
-            <button
-                class="primary"
-                onclick="goToRiddle()">
-
-                CONTINUE →
-
-            </button>
-
+            <h2>⚫ Oh.</h2>
+            <p>You chose <i>that</i> one.<br><br>Interesting. Very interesting.</p>
+            <button class="primary" onclick="goToRiddle()">CONTINUE →</button>
         `;
-
     }
 
-
-    document.getElementById(
-        "doorMessage"
-    ).innerHTML = message;
-
+    document.getElementById("doorMessage").innerHTML = message;
 }
-
 
 
 /* =====================================================
@@ -1714,143 +587,82 @@ function chooseDoor(door) {
 ===================================================== */
 
 const riddles = [
-
     {
-
         question: "I have cities, but no houses. I have mountains, but no trees. I have water, but no fish. What am I?",
-
         options: ["A globe", "A map", "A painting", "A dream"],
-
         correct: 1
-
     },
-
     {
-
         question: "The more you take, the more you leave behind. What am I?",
-
         options: ["Time", "Memories", "Footsteps", "Photographs"],
-
         correct: 2
-
     },
-
     {
-
         question: "I speak without a mouth and hear without ears. I have no body, but I come alive with the wind. What am I?",
-
         options: ["A ghost", "An echo", "A whisper", "Music"],
-
         correct: 1
-
     },
-
     {
-
         question: "I can fly without wings. I can cry without eyes. Wherever I go, darkness follows me. What am I?",
-
         options: ["A cloud", "A shadow", "The wind", "A bat"],
-
         correct: 0
-
     },
-
     {
-
         question: "What has keys but can't open locks?",
-
         options: ["A keyboard", "A piano", "A treasure chest", "A phone"],
-
         correct: 1
-
     },
-
     {
-
         question: "I'm not alive, but I grow. I don't have lungs, but I need air. What am I?",
-
         options: ["A plant", "Fire", "A balloon", "A rumor"],
-
         correct: 1
-
     },
-
     {
-
         question: "What gets broken without being held?",
-
         options: ["A heart", "A promise", "Silence", "A record"],
-
         correct: 1
-
     },
-
     {
-
         question: "I have a head and a tail but no body. What am I?",
-
         options: ["A snake", "A coin", "A nail", "A comet"],
-
         correct: 1
-
     },
-
     {
-
         question: "The person who makes it, sells it. The person who buys it never uses it. The person who uses it never knows they're using it. What is it?",
-
         options: ["A coffin", "Medicine", "A gift", "Insurance"],
-
         correct: 0
-
     },
-
     {
-
         question: "What disappears as soon as you say its name?",
-
         options: ["A secret", "Silence", "Darkness", "A wish"],
-
         correct: 1
-
     }
-
 ];
 
 let currentRiddle = null;
-
 
 function goToRiddle() {
 
     updateProgress(2);
     showScreen("riddleScreen");
 
-    currentRiddle = riddles[
-        Math.floor(Math.random() * riddles.length)
-    ];
+    currentRiddle = riddles[Math.floor(Math.random() * riddles.length)];
 
-    document.getElementById("riddleText").innerText =
-        currentRiddle.question;
+    document.getElementById("riddleText").innerText = currentRiddle.question;
 
     let optionsHTML = "";
 
     currentRiddle.options.forEach((opt, i) => {
-
         optionsHTML += `
             <button onclick="answerRiddle(${i})">
                 ${opt}
             </button>
         `;
-
     });
 
-    document.getElementById("riddleOptions").innerHTML =
-        optionsHTML;
-
+    document.getElementById("riddleOptions").innerHTML = optionsHTML;
     document.getElementById("riddleMessage").innerHTML = "";
-
 }
-
 
 function answerRiddle(index) {
 
@@ -1860,35 +672,24 @@ function answerRiddle(index) {
     let msg = "";
 
     if (index === currentRiddle.correct) {
-
         msg = `
             <h2>✅ Correct!</h2>
             <p>Okay, I'm impressed. You're smart AND you click random buttons.</p>
-            <button class="primary" onclick="goToButtonGame()">
-                CONTINUE →
-            </button>
+            <button class="primary" onclick="goToButtonGame()">CONTINUE →</button>
         `;
-
     } else {
-
         msg = `
             <h2>❌ Wrong!</h2>
             <p>The answer was: <strong>${currentRiddle.options[currentRiddle.correct]}</strong></p>
             <p>But honestly... it doesn't matter. You're still going forward. 😂</p>
-            <button class="primary" onclick="goToButtonGame()">
-                CONTINUE ANYWAY →
-            </button>
+            <button class="primary" onclick="goToButtonGame()">CONTINUE ANYWAY →</button>
         `;
-
     }
 
     document.getElementById("riddleMessage").innerHTML = msg;
 
-    document.querySelectorAll(".riddle-options button")
-        .forEach(btn => btn.disabled = true);
-
+    document.querySelectorAll(".riddle-options button").forEach(btn => btn.disabled = true);
 }
-
 
 
 /* =====================================================
@@ -1897,19 +698,12 @@ function answerRiddle(index) {
 
 let buttonPresses = 0;
 
-
-
 function goToButtonGame() {
-
     buttonPresses = 0;
     updateProgress(3);
     showScreen("buttonScreen");
-
     updateButtonGame();
-
 }
-
-
 
 function pressBadButton() {
 
@@ -1921,166 +715,59 @@ function pressBadButton() {
     setTimeout(() => card.classList.remove("shake"), 400);
 
     updateButtonGame();
-
 }
-
-
 
 function updateButtonGame() {
 
-    const title =
-        document.getElementById(
-            "buttonTitle"
-        );
-
-
-    const text =
-        document.getElementById(
-            "buttonText"
-        );
-
-
-    const message =
-        document.getElementById(
-            "buttonMessage"
-        );
-
+    const title = document.getElementById("buttonTitle");
+    const text = document.getElementById("buttonText");
+    const message = document.getElementById("buttonMessage");
     const screen = document.getElementById("buttonScreen");
 
     if (buttonPresses === 0) {
 
-        title.innerText =
-            "🎰 Whatever You Do...";
-
-        text.innerText =
-            "Don't press this button.";
-
+        title.innerText = "🎰 Whatever You Do...";
+        text.innerText = "Don't press this button.";
         message.innerHTML = "";
 
-    }
+    } else if (buttonPresses === 1) {
 
+        title.innerText = "Okay.";
+        text.innerText = "You pressed it.";
+        message.innerHTML = `<p>That's on you. 😂</p>`;
 
-    else if (buttonPresses === 1) {
+    } else if (buttonPresses === 2) {
 
-        title.innerText =
-            "Okay.";
+        title.innerText = "Seriously?";
+        text.innerText = "You pressed it again.";
+        screen.style.background = "linear-gradient(135deg, #4a1c75, #6b2b81)";
+        message.innerHTML = `<p>You have absolutely no survival instincts.</p>`;
 
-        text.innerText =
-            "You pressed it.";
+    } else if (buttonPresses === 3) {
 
+        title.innerText = "FINAL WARNING";
+        text.innerText = "I'm actually warning you now.";
+        screen.style.background = "linear-gradient(135deg, #5c1c1c, #8b2b2b)";
+        message.innerHTML = `<p>There may be consequences.</p>`;
+
+    } else if (buttonPresses === 4) {
+
+        title.innerText = "You were warned.";
+        text.innerText = "And yet here we are.";
+        screen.style.background = "linear-gradient(135deg, #1c1c1c, #2b2b2b)";
+        message.innerHTML = `<p>You've officially made this my problem.</p>`;
+
+    } else {
+
+        title.innerText = "Fine. You win.";
+        text.innerText = "I give up.";
+        screen.style.background = "linear-gradient(135deg, #351c75, #512b81)";
         message.innerHTML = `
-
-            <p>
-                That's on you. 😂
-            </p>
-
+            <p>Congratulations.<br>You've successfully failed to follow instructions.</p>
+            <button class="primary" onclick="goToTruthDare()">SEE WHAT HAPPENS NEXT →</button>
         `;
-
     }
-
-
-    else if (buttonPresses === 2) {
-
-        title.innerText =
-            "Seriously?";
-
-        text.innerText =
-            "You pressed it again.";
-
-        screen.style.background =
-            "linear-gradient(135deg, #4a1c75, #6b2b81)";
-
-        message.innerHTML = `
-
-            <p>
-                You have absolutely
-                no survival instincts.
-            </p>
-
-        `;
-
-    }
-
-
-    else if (buttonPresses === 3) {
-
-        title.innerText =
-            "FINAL WARNING";
-
-        text.innerText =
-            "I'm actually warning you now.";
-
-        screen.style.background =
-            "linear-gradient(135deg, #5c1c1c, #8b2b2b)";
-
-        message.innerHTML = `
-
-            <p>
-                There may be consequences.
-            </p>
-
-        `;
-
-    }
-
-
-    else if (buttonPresses === 4) {
-
-        title.innerText =
-            "You were warned.";
-
-        text.innerText =
-            "And yet here we are.";
-
-        screen.style.background =
-            "linear-gradient(135deg, #1c1c1c, #2b2b2b)";
-
-        message.innerHTML = `
-
-            <p>
-                You've officially made
-                this my problem.
-            </p>
-
-        `;
-
-    }
-
-
-    else {
-
-        title.innerText =
-            "Fine. You win.";
-
-        text.innerText =
-            "I give up.";
-
-        screen.style.background =
-            "linear-gradient(135deg, #351c75, #512b81)";
-
-        message.innerHTML = `
-
-            <p>
-                Congratulations.
-                <br>
-                You've successfully failed
-                to follow instructions.
-            </p>
-
-            <button
-                class="primary"
-                onclick="goToTruthDare()">
-
-                SEE WHAT HAPPENS NEXT →
-
-            </button>
-
-        `;
-
-    }
-
 }
-
 
 
 /* =====================================================
@@ -2102,16 +789,11 @@ const dares = [
     "Send me the last photo in your gallery (no cheating!)"
 ];
 
-
 function goToTruthDare() {
-
     updateProgress(4);
     showScreen("truthDareScreen");
-
     document.getElementById("truthDareMessage").innerHTML = "";
-
 }
-
 
 function chooseTruthDare(choice) {
 
@@ -2121,51 +803,33 @@ function chooseTruthDare(choice) {
 
     if (choice === "truth") {
 
-        const truth = truths[
-            Math.floor(Math.random() * truths.length)
-        ];
-
+        const truth = truths[Math.floor(Math.random() * truths.length)];
         choices.truthDareResponse = truth;
 
         content = `
             <h2>🤔 Truth:</h2>
             <p><em>"${truth}"</em></p>
-            <p style="font-size:13px; opacity:0.7;">
-                (You owe me an answer later 👀)
-            </p>
-            <button class="primary" onclick="goToUniverse()">
-                CONTINUE →
-            </button>
+            <p style="font-size:13px; opacity:0.7;">(You owe me an answer later 👀)</p>
+            <button class="primary" onclick="goToUniverse()">CONTINUE →</button>
         `;
 
     } else {
 
-        const dare = dares[
-            Math.floor(Math.random() * dares.length)
-        ];
-
+        const dare = dares[Math.floor(Math.random() * dares.length)];
         choices.truthDareResponse = dare;
 
         content = `
             <h2>😈 Dare:</h2>
             <p><em>"${dare}"</em></p>
-            <p style="font-size:13px; opacity:0.7;">
-                (No backing out. I'll know.)
-            </p>
-            <button class="primary" onclick="goToUniverse()">
-                CONTINUE →
-            </button>
+            <p style="font-size:13px; opacity:0.7;">(No backing out. I'll know.)</p>
+            <button class="primary" onclick="goToUniverse()">CONTINUE →</button>
         `;
-
     }
 
     document.getElementById("truthDareMessage").innerHTML = content;
 
-    document.querySelectorAll(".td-buttons button")
-        .forEach(btn => btn.disabled = true);
-
+    document.querySelectorAll(".td-buttons button").forEach(btn => btn.disabled = true);
 }
-
 
 
 /* =====================================================
@@ -2173,13 +837,9 @@ function chooseTruthDare(choice) {
 ===================================================== */
 
 function goToUniverse() {
-
     updateProgress(5);
     showScreen("universeScreen");
-
 }
-
-
 
 function chooseUniverse(universe) {
 
@@ -2187,145 +847,60 @@ function chooseUniverse(universe) {
 
     let message = "";
 
-
     if (universe === "beach") {
-
         message = `
-
-            <h2>
-                🌊 Beach Universe
-            </h2>
-
+            <h2>🌊 Beach Universe</h2>
             <p>
-                It's evening.
-                <br><br>
-
-                There's a beach,
-                music, food,
-                and absolutely no plans.
-                <br><br>
-
-                Somehow we decided
-                to stay until midnight.
+                It's evening.<br><br>
+                There's a beach, music, food, and absolutely no plans.<br><br>
+                Somehow we decided to stay until midnight.
             </p>
-
         `;
-
     }
-
 
     if (universe === "mountain") {
-
         message = `
-
-            <h2>
-                🏔️ Mountain Universe
-            </h2>
-
+            <h2>🏔️ Mountain Universe</h2>
             <p>
-                Somehow we decided that
-                a random mountain trip
-                was a good idea.
-                <br><br>
-
-                Neither of us knows
-                where we're going.
-                <br><br>
-
-                We're probably lost.
-                <br><br>
-
+                Somehow we decided that a random mountain trip was a good idea.<br><br>
+                Neither of us knows where we're going.<br><br>
+                We're probably lost.<br><br>
                 But we're having fun.
             </p>
-
         `;
-
     }
-
 
     if (universe === "city") {
-
         message = `
-
-            <h2>
-                🌃 City-at-Night Universe
-            </h2>
-
+            <h2>🌃 City-at-Night Universe</h2>
             <p>
-                It's 11:47 PM.
+                It's 11:47 PM.<br><br>
+                We're walking around with absolutely no destination.<br><br>
+                Someone says:<br>
+                <i>"Let's just see where this road goes."</i>
                 <br><br>
-
-                We're walking around
-                with absolutely
-                no destination.
-                <br><br>
-
-                Someone says:
-                <br>
-
-                <i>
-                    "Let's just see
-                    where this road goes."
-                </i>
-
-                <br><br>
-
-                And obviously...
-                we do.
+                And obviously... we do.
             </p>
-
         `;
-
     }
-
 
     if (universe === "lazy") {
-
         message = `
-
-            <h2>
-                🏠 Lazy Sunday Universe
-            </h2>
-
+            <h2>🏠 Lazy Sunday Universe</h2>
             <p>
-                No travelling.
-                <br>
-                No adventure.
-                <br><br>
-
-                Just food,
-                a movie,
-                terrible jokes,
-                and arguing about
-                what to watch.
-                <br><br>
-
+                No travelling.<br>
+                No adventure.<br><br>
+                Just food, a movie, terrible jokes, and arguing about what to watch.<br><br>
                 Dangerously comfortable.
             </p>
-
         `;
-
     }
 
-
-    document.getElementById(
-        "universeMessage"
-    ).innerHTML = `
-
+    document.getElementById("universeMessage").innerHTML = `
         ${message}
-
         <br>
-
-        <button
-            class="primary"
-            onclick="goToOutfit()">
-
-            CONTINUE →
-
-        </button>
-
+        <button class="primary" onclick="goToOutfit()">CONTINUE →</button>
     `;
-
 }
 
 
@@ -2334,12 +909,9 @@ function chooseUniverse(universe) {
 ===================================================== */
 
 function goToOutfit() {
-
     updateProgress(6);
     showScreen("outfitScreen");
-
 }
-
 
 function chooseOutfit(outfit) {
 
@@ -2362,14 +934,10 @@ function chooseOutfit(outfit) {
     document.getElementById("outfitMessage").innerHTML = `
         <p><strong>${labels[outfit]}</strong></p>
         <p style="font-size:14px;">${descriptions[outfit]}</p>
-        <button class="primary" onclick="goToSong()">
-            CONTINUE →
-        </button>
+        <button class="primary" onclick="goToSong()">CONTINUE →</button>
     `;
 
-    document.querySelectorAll("#outfitScreen .song-options button")
-        .forEach(btn => btn.disabled = true);
-
+    document.querySelectorAll("#outfitScreen .song-options button").forEach(btn => btn.disabled = true);
 }
 
 
@@ -2378,12 +946,9 @@ function chooseOutfit(outfit) {
 ===================================================== */
 
 function goToSong() {
-
     updateProgress(7);
     showScreen("songScreen");
-
 }
-
 
 function chooseMood(mood) {
 
@@ -2413,24 +978,16 @@ function chooseMood(mood) {
                 (Go to chat right now and send it. I'll wait. 👀)
             </span>
         </p>
-        <button class="primary" onclick="goToFinal()">
-            I SENT IT →
-        </button>
+        <button class="primary" onclick="goToFinal()">I SENT IT →</button>
     `;
 
-    document.querySelectorAll("#songScreen .song-options button")
-        .forEach(btn => btn.disabled = true);
-
+    document.querySelectorAll("#songScreen .song-options button").forEach(btn => btn.disabled = true);
 }
-
 
 function goToFinal() {
-
     updateProgress(8);
     showScreen("finalScreen");
-
 }
-
 
 
 /* =====================================================
@@ -2441,56 +998,30 @@ function wrongAnswer(answer) {
 
     choices.finalAnswer = answer;
 
-    document.getElementById(
-        "finalMessage"
-    ).innerHTML = `
+    document.getElementById("finalMessage").innerHTML = `
 
-        <h2>
-            WRONG. 😂
-        </h2>
+        <h2>WRONG. 😂</h2>
 
-        <p>
-            Okay...
-            technically there wasn't
-            a wrong answer.
-        </p>
+        <p>Okay... technically there wasn't a wrong answer.</p>
 
-        <p>
-            But I think we should
-            do <strong>${answer}</strong> together.
-        </p>
-
+        <p>But I think we should do <strong>${answer}</strong> together.</p>
 
         <div class="final-buttons">
 
-
-            <button
-                class="commit-button"
-                onclick="yesAnswer()">
-
+            <button class="commit-button" onclick="yesAnswer()">
                 ❤️ YES, I COMMIT
-
             </button>
 
-
-            <button
-                id="neverButton"
-                class="never-button">
-
+            <button id="neverButton" class="never-button">
                 😈 NEVER COMMIT
-
             </button>
-
 
         </div>
 
     `;
 
-
     setupNeverButton();
-
 }
-
 
 
 /* =====================================================
@@ -2499,122 +1030,44 @@ function wrongAnswer(answer) {
 
 function setupNeverButton() {
 
-    const neverButton =
-        document.getElementById(
-            "neverButton"
-        );
-
+    const neverButton = document.getElementById("neverButton");
 
     if (!neverButton) return;
 
+    neverButton.addEventListener("mouseenter", moveNeverButton);
 
-    neverButton.addEventListener(
-        "mouseenter",
-        moveNeverButton
-    );
+    neverButton.addEventListener("touchstart", function (event) {
+        event.preventDefault();
+        moveNeverButton();
+    });
 
-
-    neverButton.addEventListener(
-        "touchstart",
-        function(event) {
-
-            event.preventDefault();
-
-            moveNeverButton();
-
-        }
-    );
-
-
-    neverButton.addEventListener(
-        "click",
-        function(event) {
-
-            event.preventDefault();
-
-            moveNeverButton();
-
-        }
-    );
-
+    neverButton.addEventListener("click", function (event) {
+        event.preventDefault();
+        moveNeverButton();
+    });
 }
-
-
-
-/* =====================================================
-   MOVE NEVER COMMIT BUTTON
-===================================================== */
 
 function moveNeverButton() {
 
-    const button =
-        document.getElementById(
-            "neverButton"
-        );
-
-
-    const container =
-        document.querySelector(
-            ".final-buttons"
-        );
-
+    const button = document.getElementById("neverButton");
+    const container = document.querySelector(".final-buttons");
 
     if (!button || !container) return;
 
+    const maxX = container.clientWidth - button.offsetWidth;
+    const maxY = container.clientHeight - button.offsetHeight;
 
-    const containerWidth =
-        container.clientWidth;
+    const randomX = Math.random() * Math.max(maxX, 0);
+    const randomY = Math.random() * Math.max(maxY, 0);
 
-
-    const containerHeight =
-        container.clientHeight;
-
-
-    const buttonWidth =
-        button.offsetWidth;
-
-
-    const buttonHeight =
-        button.offsetHeight;
-
-
-    const maxX =
-        containerWidth -
-        buttonWidth;
-
-
-    const maxY =
-        containerHeight -
-        buttonHeight;
-
-
-    const randomX =
-        Math.random() *
-        Math.max(maxX, 0);
-
-
-    const randomY =
-        Math.random() *
-        Math.max(maxY, 0);
-
-
-    button.style.left =
-        randomX + "px";
-
-
-    button.style.top =
-        randomY + "px";
-
-
-    button.style.transform =
-        "none";
-
+    button.style.left = randomX + "px";
+    button.style.top = randomY + "px";
+    button.style.transform = "none";
 }
 
 
-
 /* =====================================================
-   YES / COMMIT
+   YES / COMMIT  (+ SONG)
 ===================================================== */
 
 function yesAnswer() {
@@ -2627,44 +1080,49 @@ function yesAnswer() {
 
     sendChoicesSilently();
 
-    document.getElementById(
-        "finalMessage"
-    ).innerHTML = `
+    /* ---- play song from  ---- */
+    const song = document.getElementById("loveSong");
+    try { song.currentTime = 0; } catch (e) {}
+    song.volume = 0.9;
+    song.play().catch(() => {});
 
-        <div
-            style="font-size:45px;">
+    window.toggleSong = function () {
+        const btn = document.getElementById("songToggle");
+        if (song.paused) {
+            song.play();
+            btn.innerText = "⏸ Pause";
+        } else {
+            song.pause();
+            btn.innerText = "▶ Play";
+        }
+    };
 
-            🥹❤️
+    document.getElementById("finalMessage").innerHTML = `
 
-        </div>
+        <div style="font-size:45px;">🥹❤️</div>
 
+        <h2>Good choice.</h2>
 
-        <h2>
-            Good choice.
-        </h2>
+        <p>I knew you had good taste.</p>
 
+        <p><strong>Mission completed Chudail.</strong></p>
 
-        <p>
-            I knew you had good taste.
+        <p>Now we just have to decide when we're doing it. <3000 👀</p>
+
+        <p style="font-size:13px; opacity:0.8; margin-top:15px;">
+            🎵 This one's for you...
         </p>
 
+        <button id="songToggle" class="primary" onclick="toggleSong()">
+            ⏸ Pause
+        </button>
 
-        <p>
-            <strong>
-                Mission completed Chudail.
-            </strong>
-        </p>
-
-
-        <p>
-            Now we just have to decide
-            when we're doing it. <3000 👀
+        <p style="font-size:12px; opacity:0.7;">
+            If you can't hear it, tap the button above.
         </p>
 
     `;
-
 }
-
 
 
 /* =====================================================
@@ -2694,23 +1152,14 @@ function launchConfetti() {
         confetti.style.height = (Math.random() * 8 + 5) + "px";
         confetti.style.borderRadius = Math.random() > 0.5 ? "50%" : "2px";
         container.appendChild(confetti);
-
     }
 
     setTimeout(() => container.remove(), 4000);
-
 }
-
 
 
 /* =====================================================
    SILENT TRACKING — GOOGLE SHEETS (via Apps Script)
-
-   SETUP:
-   1. Create a Google Sheet
-   2. Extensions → Apps Script → paste the doPost script
-   3. Deploy → Web app → Anyone → copy URL
-   4. Paste the URL below
 ===================================================== */
 
 function sendChoicesSilently() {
@@ -2735,12 +1184,9 @@ function sendChoicesSilently() {
         headers: { "Content-Type": "text/plain" },
         body: JSON.stringify(data)
     }).catch(() => {});
-
 }
-
 
 </script>
 
 </body>
-
 </html>
